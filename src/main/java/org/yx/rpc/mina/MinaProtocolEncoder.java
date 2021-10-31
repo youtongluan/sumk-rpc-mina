@@ -19,7 +19,7 @@ public class MinaProtocolEncoder implements ProtocolEncoder {
 		if (message == null) {
 			return;
 		}
-		MinaDataBuffer buf=new MinaDataBuffer(createIoBuffer(1024));
+		MinaDataBuffer buf=new MinaDataBuffer(createIoBuffer(2048));
 		CodecKit.encode(message, buf);
 		IoBuffer ioBuf=buf.buffer();
 		if(ioBuf.remaining()>0) {
@@ -34,8 +34,7 @@ public class MinaProtocolEncoder implements ProtocolEncoder {
 	}
 
 	private static IoBuffer createIoBuffer(int strLength){
-		//预防*2之后变成负数
-		return IoBuffer.allocate(Math.max(strLength, strLength << 1))
+		return IoBuffer.allocate(strLength)
 				.setAutoExpand(true).order(ByteOrder.BIG_ENDIAN);
 	}
 }
